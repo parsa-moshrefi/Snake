@@ -9,10 +9,10 @@
 #define FEED_PERCENT 0.005
 
 #include <iostream>
+#include <windows.h>
 using namespace std;
 
 #include <random>
-
 
 int getObstacleCount(int width, int height) {
     return (int)(OBSTACLE_PERCENT * width * height);
@@ -33,6 +33,11 @@ typedef struct Board {
     int origh;
     char** board;
 } CADRE;
+
+typedef struct Location {
+	int w;
+	int h;
+} LOCATION;
 
 void initializeBoard(CADRE* cadre, DIMENSIONS* dims) {
     cadre->board = new char* [dims->width];
@@ -107,6 +112,7 @@ void displayBoard(CADRE cadre, DIMENSIONS dims) {
         for (int h = 0; h < dims.height; h++) {
             cout << cadre.board[w][h];
         }
+        
         cout << endl;
     }
 }

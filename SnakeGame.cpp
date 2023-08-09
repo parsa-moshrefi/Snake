@@ -6,12 +6,10 @@ using namespace std;
 
 #include "BoardManager.h"
 #include "InteractionManager.h"
+#include "utils.h"
 
 #include <conio.h>
 #include <stdio.h>
-//#include <Windows.h>
-//#include <wincontypes.h>
-
 
 #define UP 72
 #define DOWN 80
@@ -35,10 +33,11 @@ CADRE initializeCadre(DIMENSIONS dims) {
 int startGame() {
     DIMENSIONS dims = promptDimensions();
     CADRE cadre = initializeCadre(dims);
+    LOCATION loc;
     displayBoard(cadre, dims);
     char in;
-    int currWidth = cadre.origw, currHeight = cadre.origh;
-    
+    int curr_y = cadre.origw + 2, curr_x = cadre.origh;
+    gotoxy(curr_x, curr_y);
     do {
         in = (char) _getch();
         switch (in) {
