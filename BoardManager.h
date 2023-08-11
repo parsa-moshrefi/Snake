@@ -9,10 +9,13 @@
 #define FEED_PERCENT 0.005
 
 #include <iostream>
+#include <conio.h>
+#include <stdlib.h>
 #include <windows.h>
 using namespace std;
 
 #include <random>
+#include "utils.h"
 
 int getObstacleCount(int width, int height) {
     return (int)(OBSTACLE_PERCENT * width * height);
@@ -107,14 +110,17 @@ DIMENSIONS promptDimensions() {
     return dimensions;
 }
 
-void displayBoard(CADRE cadre, DIMENSIONS dims) {
+void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc) {
+	system("cls");
     for (int w = 0; w < dims.width; w++) {
         for (int h = 0; h < dims.height; h++) {
             cout << cadre.board[w][h];
         }
-        
         cout << endl;
     }
+    loc->h = cadre.origw;
+    loc->w = cadre.origh;
+	gotoxy(loc->w, loc->h);
 }
 
 #endif

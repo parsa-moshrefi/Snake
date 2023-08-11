@@ -6,7 +6,6 @@ using namespace std;
 
 #include "BoardManager.h"
 #include "InteractionManager.h"
-#include "utils.h"
 
 #include <conio.h>
 #include <stdio.h>
@@ -34,10 +33,8 @@ int startGame() {
     DIMENSIONS dims = promptDimensions();
     CADRE cadre = initializeCadre(dims);
     LOCATION loc;
-    displayBoard(cadre, dims);
+    displayBoard(cadre, dims, &loc);
     char in;
-    int curr_y = cadre.origw + 2, curr_x = cadre.origh;
-    gotoxy(curr_x, curr_y);
     do {
         in = (char) _getch();
         switch (in) {
@@ -55,14 +52,16 @@ int startGame() {
                 break;
             case EXIT:
             case (char)(EXIT + LETTER_NUMBER):
+            	gotoxy(0, dims.width + 1);
                 cout << "Sure to quit? (Y/n)" << endl;
                 do {
                     cin >> in;
-                    if (userConfirmed(in)) {
+                    if (userConfirmed(in)) {                    	
                         return 0;
                     }
                     else if (userIsNotSure(in)) {
-                        break;
+                        gotoxy(loc.w, loc.w);
+						break;
                     }
                     else {
                         cout << "invalid input. Try again (Y/n)." << endl;
