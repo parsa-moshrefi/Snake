@@ -9,6 +9,8 @@ using namespace std;
 
 #include <conio.h>
 #include <stdio.h>
+#include <utility>
+#include <list>
 
 #define UP 72
 #define DOWN 80
@@ -17,23 +19,24 @@ using namespace std;
 
 
 
-CADRE initializeCadre(DIMENSIONS dims) {
+CADRE initializeCadre(DIMENSIONS dims, list<pair<int, int>>* snake) {
     CADRE cadre;
-
+    maximizeConsole();
     // initialize the plate by pointer
     initializeBoard(&cadre, &dims);
     fillObstacles(&cadre, &dims);
     fillFeeds(&cadre, &dims);
-    placeSnakeOrigin(&cadre, &dims);
+    placeSnakeOrigin(&cadre, &dims, snake);
     return cadre;
 }
 
 
 int startGame() {
+	list<pair<int, int>> snake;
     DIMENSIONS dims = promptDimensions();
-    CADRE cadre = initializeCadre(dims);
+    CADRE cadre = initializeCadre(dims, &snake);
     LOCATION loc;
-    displayBoard(cadre, dims, &loc);
+    displayBoard(cadre, dims, &loc, &snake);
     char in;
     do {
         in = (char) _getch();
@@ -52,21 +55,9 @@ int startGame() {
                 break;
             case EXIT:
             case (char)(EXIT + LETTER_NUMBER):
-            	gotoxy(0, dims.width + 1);
-                cout << "Sure to quit? (Y/n)" << endl;
-                do {
-                    cin >> in;
-                    if (userConfirmed(in)) {                    	
-                        return 0;
-                    }
-                    else if (userIsNotSure(in)) {
-                        gotoxy(loc.w, loc.w);
-						break;
-                    }
-                    else {
-                        cout << "invalid input. Try again (Y/n)." << endl;
-                    }
-                } while (!isUserContinuationCharacter(in));
+				if (confirmExit(loc, dims.width + 2)) {
+					return 0;
+				}
         }
     } while (true);
 }

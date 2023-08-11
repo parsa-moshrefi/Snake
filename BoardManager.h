@@ -2,15 +2,17 @@
 #define BOARD_INITIALIZER
 
 #define EMPTY ' '
-#define OBSTACLE 'O'
-#define FEED 'F'
-#define SNAKE 'S'
+#define OBSTACLE '#'
+#define FEED '$'
+#define SNAKE '*'
 #define OBSTACLE_PERCENT 0.01
 #define FEED_PERCENT 0.005
 
 #include <iostream>
 #include <conio.h>
 #include <stdlib.h>
+#include <utility>
+#include <list>
 #include <windows.h>
 using namespace std;
 
@@ -86,7 +88,7 @@ void fillFeeds(CADRE* cadre, DIMENSIONS* dims) {
     }
 }
 
-void placeSnakeOrigin(CADRE* cadre, DIMENSIONS* dims) {
+void placeSnakeOrigin(CADRE* cadre, DIMENSIONS* dims, list<pair<int, int>>* snake) {
     random_device rd;
     mt19937 rng(rd());
     uniform_int_distribution<int> rndwIdx(1, dims->width - 1), rndhIdx(1, dims->height - 1);
@@ -99,6 +101,10 @@ void placeSnakeOrigin(CADRE* cadre, DIMENSIONS* dims) {
     cadre->board[origw][origh] = SNAKE;
     cadre->origh = origh;
     cadre->origw = origw;
+	pair<int, int> origin;
+	origin.first = origw;
+	origin.second = origh;
+	snake->push_front(origin);
 }
 
 DIMENSIONS promptDimensions() {
@@ -110,17 +116,42 @@ DIMENSIONS promptDimensions() {
     return dimensions;
 }
 
-void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc) {
+void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, int>>* snake) {
 	system("cls");
+	
+	for (int h = 0; h < dims.height + 2; h++)
+		cout << OBSTACLE;
+		
+	gotoxy(0, dims.width + 1);
+	
+	for (int h = 0; h < dims.height + 2; h++)
+		cout << OBSTACLE;
+	
+	for (int w = 1; w < dims.width + 2; w++) {
+		gotoxy(0, w);
+		cout << OBSTACLE;
+	}
+		
+	for (int w = 1; w < dims.width + 2; w++) {
+		gotoxy(dims.height + 1, w);
+		cout << OBSTACLE;
+	}
+	
     for (int w = 0; w < dims.width; w++) {
         for (int h = 0; h < dims.height; h++) {
+        	gotoxy(h+1, w+1);
             cout << cadre.board[w][h];
         }
-        cout << endl;
     }
-    loc->h = cadre.origw;
-    loc->w = cadre.origh;
+    
+    loc->h = cadre.origw + 1;
+    loc->w = cadre.origh + 1;
 	gotoxy(loc->w, loc->h);
+}
+
+void maximizeConsole() {
+	HWND hwnd = GetConsoleWindow();
+	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 }
 
 #endif
