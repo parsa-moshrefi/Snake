@@ -44,6 +44,10 @@ typedef struct Location {
 	int h;
 } LOCATION;
 
+void clearBoard() {
+	system("cls");
+}
+
 void initializeBoard(CADRE* cadre, DIMENSIONS* dims) {
     cadre->board = new char* [dims->width];
 
@@ -116,8 +120,9 @@ DIMENSIONS promptDimensions() {
     return dimensions;
 }
 
-void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, int>>* snake) {
-	system("cls");
+void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, int>>* snake) {	
+
+	clearBoard();
 	
 	for (int h = 0; h < dims.height + 2; h++)
 		cout << OBSTACLE;

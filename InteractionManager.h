@@ -45,4 +45,8 @@ bool confirmExit(LOCATION loc, int promptLine) {
     return false;
 }
 
+void goRight() {
+	// TODO: GO ON WITH THE SAME SIGNATURE OF MOVE RIGHT
+}
+
 #endif

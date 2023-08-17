@@ -1,5 +1,7 @@
 #include <utility>
 #include <list>
+#include "BoardManager.h"
+#include "utils.h"
 
 pair<int, int> getHead(list<pair<int, int>>* snake) {
 	if (snake == NULL || snake->size == 0) {
@@ -17,15 +19,32 @@ pair<int, int> getTail(list<pair<int, int>>* snake) {
 	return snake->back;
 }
 
-void grow(list<tuple<int, int>>* snake, pair<int, int> nhead) {
+bool isGrowable(list<pair<int, int>>* snake, pair<int, int> nhead, CADRE* cadre) {
+	
 	if (snake == null) {
-		snake = (list<pair<int, int>>*) malloc(sizeof(list<pair<int, int>>));
+		snake = new list<pair<int, int>>();
+	}
+
+	pair<int, int> head = snake->front();
+	
+	if (head != NULL && head.first != nhead.first && head.second != nhead.second) {
+		return false;
+	}
+
+	if (cadre->board[nhead.first - 1][nhead.second - 1] != FEED) {
+		return false;
 	}
 	
-	snake->push_front(nhead);
+	return true;
 }
 
-bool collide(list<pair<int, int>>* snake, pair<int, int> object) {
+bool collide(list<pair<int, int>>* snake, pair<int, int> object, CADRE* cadre) {
+	
+	char kind = cadre->board[object.first - 1][object.second - 1];
+	
+	if (kind != OBSTACLE && kind != SNAKE) {
+		return false;
+	}
 	
 	pair<int, int> head = getHead(snake);
 	
@@ -36,18 +55,37 @@ bool collide(list<pair<int, int>>* snake, pair<int, int> object) {
 	return (head.first == object.first && head.second == object.second);
 }
 
-void moveRight(list<pair<int, int>>* snake) {
+bool moveRight(list<pair<int, int>>* snake, CADRE* cadre) {
 	if (snake == NULL) {
-		return;
+		return false;
 	}
 	
-	pair<int, int> head = getHead(snake);	
+	pair<int, int> head = getHead(snake);
+	
+	if (head == NULL) {
+		return false;
+	}
+	
 	pair<int, int> nhead;
 	nhead.first = head.first;
 	nhead.second = head.second + 1;
 	snake->push_front(nhead);
-	snake->pop_back();
+		
+	if (isGrowable(snake, nhead, cadre)) {
+		gotoxy((short)nhead.second + 1, (short)nhead.first + 1);
+		cout << SNAKE;
+		return true;
+	} 
+	
+	pair<int, int> tail = snake->pop_back();
+	gotoxy((short)tail.second + 1, (short)tail.first + 1);
+	cout << EMPTY;
+	gotoxy((short)nhead.second + 1, (short)nhead.first + 1);
+		
+	if (collide(snake, nhead, cadre)) {
+		return false;
+	}
+	
+	cout << SNAKE;
+	return true;
 }
-
-// TODO: REFACTOR ALL SO THAT BOARD ELEMENTS WOULD BE 
-// RENDERED PERFORMANTLY (MINIMUM CHANGES IN CONSE)
