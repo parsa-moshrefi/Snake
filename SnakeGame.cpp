@@ -18,7 +18,6 @@ using namespace std;
 #define LEFT 75
 
 
-
 CADRE initializeCadre(DIMENSIONS dims, list<pair<int, int>>* snake) {
     CADRE cadre;
     maximizeConsole();
