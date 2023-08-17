@@ -1,5 +1,5 @@
-#ifndef BOARD_INITIALIZER
-#define BOARD_INITIALIZER
+#ifndef BOARD_MANAGER
+#define BOARD_MANAGER
 
 #define EMPTY ' '
 #define OBSTACLE '#'
@@ -26,23 +26,6 @@ int getObstacleCount(int width, int height) {
 int getFeedCount(int width, int height) {
     return (int)(FEED_PERCENT * width * height);
 }
-
-typedef struct Dimensions {
-    int width;
-    int height;
-} DIMENSIONS;
-
-
-typedef struct Board {
-    int origw;
-    int origh;
-    char** board;
-} CADRE;
-
-typedef struct Location {
-	int w;
-	int h;
-} LOCATION;
 
 void clearBoard() {
 	system("cls");
@@ -157,6 +140,18 @@ void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, in
 void maximizeConsole() {
 	HWND hwnd = GetConsoleWindow();
 	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+}
+
+bool onBorders(pair<int, int> room, Dimensions* dims) {
+	
+	if (dims == NULL) {
+		return false;
+	}
+	
+	return (room.first == 0 || 
+			room.first == dims->height || 
+			room.second == 0 || 
+			room.second == dims->width);
 }
 
 #endif

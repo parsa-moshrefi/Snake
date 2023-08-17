@@ -1,6 +1,7 @@
+#ifndef SNAKE
+#define SNAKE
 #include <utility>
 #include <list>
-#include "BoardManager.h"
 #include "utils.h"
 
 pair<int, int> getHead(list<pair<int, int>>* snake) {
@@ -55,7 +56,7 @@ bool collide(list<pair<int, int>>* snake, pair<int, int> object, CADRE* cadre) {
 	return (head.first == object.first && head.second == object.second);
 }
 
-bool moveRight(list<pair<int, int>>* snake, CADRE* cadre) {
+bool moveRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
 	if (snake == NULL) {
 		return false;
 	}
@@ -77,15 +78,18 @@ bool moveRight(list<pair<int, int>>* snake, CADRE* cadre) {
 		return true;
 	} 
 	
-	pair<int, int> tail = snake->pop_back();
+	pair<int, int> tail = snake->back();
+	snake->pop_back();
 	gotoxy((short)tail.second + 1, (short)tail.first + 1);
 	cout << EMPTY;
 	gotoxy((short)nhead.second + 1, (short)nhead.first + 1);
 		
-	if (collide(snake, nhead, cadre)) {
+	if (collide(snake, nhead, cadre) || onBorders(nhead, dims)) {
 		return false;
 	}
 	
 	cout << SNAKE;
 	return true;
 }
+
+#endif

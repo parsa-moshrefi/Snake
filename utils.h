@@ -1,5 +1,22 @@
+#ifndef UTILS
+#define UTILS
 #include <windows.h>
 
+typedef struct Dimensions {
+    int width;
+    int height;
+} DIMENSIONS;
+
+typedef struct Board {
+    int origw;
+    int origh;
+    char** board;
+} CADRE;
+
+typedef struct Location {
+	int w;
+	int h;
+} LOCATION;
 
 void gotoxy(short a, short b) {
 	COORD coordinates;
@@ -8,3 +25,4 @@ void gotoxy(short a, short b) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
 
+#endif

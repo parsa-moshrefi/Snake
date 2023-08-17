@@ -6,6 +6,8 @@
 #define CONFIRM 'Y'
 #define NOT_SURE 'N'
 #define CARRIAGE_RETURN '\n'
+#define DELAY 200
+#include "Snake.h"
 
 
 bool userConfirmed(char c) {
@@ -45,8 +47,9 @@ bool confirmExit(LOCATION loc, int promptLine) {
     return false;
 }
 
-void goRight() {
-	// TODO: GO ON WITH THE SAME SIGNATURE OF MOVE RIGHT
+void goRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+	// todo: why the following method is not defined in the scope
+	// moveRight(snake, cadre, dims);
 }
 
 #endif
