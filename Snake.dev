@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit5]
-FileName=utils.h
+FileName=Snake.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -90,8 +90,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit6]
+FileName=Snake.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit4]
-FileName=Snake.h
+FileName=utils.h
 CompileCpp=1
 Folder=
 Compile=1

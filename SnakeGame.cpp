@@ -50,7 +50,7 @@ int startGame() {
                 cout << "Left pressed" << endl;
                 break;
             case RIGHT:
-                cout << "Right pressed" << endl;
+                goRight(&snake, &cadre, &dims);
                 break;
             case EXIT:
             case (char)(EXIT + LETTER_NUMBER):

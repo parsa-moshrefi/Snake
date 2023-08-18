@@ -1,34 +1,41 @@
-#ifndef SNAKE
-#define SNAKE
+#ifndef __SNAKE_H__
+#define __SNAKE_H__
+
 #include <utility>
 #include <list>
 #include "utils.h"
 
-pair<int, int> getHead(list<pair<int, int>>* snake) {
-	if (snake == NULL || snake->size == 0) {
-		return NULL;
+pair<int, int> getHead(list<pair<int, int>>* snake, CADRE* cadre) {
+	if (snake == NULL) {
+		snake = new list<pair<int, int>>();
+	}
+	
+	if (snake->size() == 0) {
+		pair<int, int>* headPtr = new pair<int, int>(cadre->origw, cadre->origh); 
+		snake->push_front(*headPtr);
 	}
 	
 	return snake->front();
 }
 
-pair<int, int> getTail(list<pair<int, int>>* snake) {
-	if (snake == NULL || snake->size == 0) {
-		return NULL;
+pair<int, int> getTail(list<pair<int, int>>* snake, CADRE* cadre) {
+	if (snake == NULL) {
+		snake = new list<pair<int, int>>();
 	}
 	
-	return snake->back;
+	if (snake->size() == 0) {
+		pair<int, int>* tailPtr = new pair<int, int>(cadre->origw, cadre->origh); 
+		snake->push_back(*tailPtr);
+	}
+	
+	return snake->back();
 }
 
 bool isGrowable(list<pair<int, int>>* snake, pair<int, int> nhead, CADRE* cadre) {
 	
-	if (snake == null) {
-		snake = new list<pair<int, int>>();
-	}
-
-	pair<int, int> head = snake->front();
+	pair<int, int> head = getHead(snake, cadre);
 	
-	if (head != NULL && head.first != nhead.first && head.second != nhead.second) {
+	if (head.first != nhead.first && head.second != nhead.second) {
 		return false;
 	}
 
@@ -47,26 +54,12 @@ bool collide(list<pair<int, int>>* snake, pair<int, int> object, CADRE* cadre) {
 		return false;
 	}
 	
-	pair<int, int> head = getHead(snake);
-	
-	if (head == NULL) {
-		return false;
-	}
-	
+	pair<int, int> head = getHead(snake, cadre);
 	return (head.first == object.first && head.second == object.second);
 }
 
 bool moveRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
-	if (snake == NULL) {
-		return false;
-	}
-	
-	pair<int, int> head = getHead(snake);
-	
-	if (head == NULL) {
-		return false;
-	}
-	
+	pair<int, int> head = getHead(snake, cadre);
 	pair<int, int> nhead;
 	nhead.first = head.first;
 	nhead.second = head.second + 1;
@@ -78,7 +71,7 @@ bool moveRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
 		return true;
 	} 
 	
-	pair<int, int> tail = snake->back();
+	pair<int, int> tail = getTail(snake, cadre);
 	snake->pop_back();
 	gotoxy((short)tail.second + 1, (short)tail.first + 1);
 	cout << EMPTY;

@@ -6,7 +6,7 @@
 #define CONFIRM 'Y'
 #define NOT_SURE 'N'
 #define CARRIAGE_RETURN '\n'
-#define DELAY 200
+#define DELAY 2000
 #include "Snake.h"
 
 
@@ -48,8 +48,9 @@ bool confirmExit(LOCATION loc, int promptLine) {
 }
 
 void goRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
-	// todo: why the following method is not defined in the scope
-	// moveRight(snake, cadre, dims);
+	do {
+		delay(DELAY);
+	} while(moveRight(snake, cadre, dims));
 }
 
 #endif

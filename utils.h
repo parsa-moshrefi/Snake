@@ -25,4 +25,8 @@ void gotoxy(short a, short b) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
 
+void delay(int dly) {
+	for (int i=0; i<dly; i++);
+}
+
 #endif
