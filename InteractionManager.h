@@ -6,7 +6,7 @@
 #define CONFIRM 'Y'
 #define NOT_SURE 'N'
 #define CARRIAGE_RETURN '\n'
-#define DELAY 2000
+#define DELAY 400000000
 #include "Snake.h"
 
 
