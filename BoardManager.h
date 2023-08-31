@@ -1,13 +1,6 @@
 #ifndef BOARD_MANAGER
 #define BOARD_MANAGER
 
-#define EMPTY ' '
-#define OBSTACLE '#'
-#define FEED '$'
-#define SNAKE '*'
-#define OBSTACLE_PERCENT 0.01
-#define FEED_PERCENT 0.005
-
 #include <iostream>
 #include <conio.h>
 #include <stdlib.h>
@@ -103,7 +96,7 @@ DIMENSIONS promptDimensions() {
     return dimensions;
 }
 
-void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, int>>* snake) {	
+void displayBoard(CADRE cadre, DIMENSIONS dims, pair<int, int>* loc, list<pair<int, int>>* snake) {	
 
 	clearBoard();
 	
@@ -132,9 +125,9 @@ void displayBoard(CADRE cadre, DIMENSIONS dims, LOCATION* loc, list<pair<int, in
         }
     }
     
-    loc->h = cadre.origw + 1;
-    loc->w = cadre.origh + 1;
-	gotoxy(loc->w, loc->h);
+    loc->first = cadre.origw + 1;
+    loc->second = cadre.origh + 1;
+	gotoxy(loc->second, loc->first);
 }
 
 void maximizeConsole() {
@@ -149,9 +142,9 @@ bool onBorders(pair<int, int> room, Dimensions* dims) {
 	}
 	
 	return (room.first == 0 || 
-			room.first == dims->height || 
+			room.first == dims->width || 
 			room.second == 0 || 
-			room.second == dims->width);
+			room.second == dims->height);
 }
 
 #endif

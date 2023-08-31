@@ -6,7 +6,7 @@
 #define CONFIRM 'Y'
 #define NOT_SURE 'N'
 #define CARRIAGE_RETURN '\n'
-#define DELAY 400000000
+#define KEY_STROKE 1
 #include "Snake.h"
 
 
@@ -25,7 +25,7 @@ bool isUserContinuationCharacter(char c) {
         c == (char)(EXIT + LETTER_NUMBER);
 }
 
-bool confirmExit(LOCATION loc, int promptLine) {
+bool confirmExit(pair<int, int> loc, int promptLine) {
 	gotoxy(0, promptLine);
 	char in;
     cout << "Sure to quit? (Y/n)                     " << endl;
@@ -35,7 +35,7 @@ bool confirmExit(LOCATION loc, int promptLine) {
             return true;
         }
         else if (userIsNotSure(in)) {
-            gotoxy(loc.w, loc.h);
+            gotoxy(loc.second, loc.first);
 			break;
         }
         else {
@@ -47,10 +47,80 @@ bool confirmExit(LOCATION loc, int promptLine) {
     return false;
 }
 
-void goRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+void printMessage(int promptLine, char* message) {
+	gotoxy(0, promptLine);
+	printf("%s\t\t\t", message);
+}
+
+int logByResult(int state, DIMENSIONS* dims) {
+	char* woneMsg = "You wone!";
+	char* lousedMsg = "You loused!";
+
+	if (state == WONE) {
+		printMessage(dims->width+2, woneMsg);
+		return 0;
+	} else if (state == LOUSED) {
+		printMessage(dims->width+2, lousedMsg);
+		return 0;
+	}
+	
+	return UNKNOWN;
+}
+
+int goRight(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+	int strokeResult = 0;
+	int rightResult = 0;
 	do {
-		delay(DELAY);
-	} while(moveRight(snake, cadre, dims));
+		rightResult = moveRight(snake, cadre, dims);
+		strokeResult = delay();
+		if (strokeResult == KEY_STROKE) {
+			return KEY_STROKE;
+		}		
+	} while (rightResult != WONE && rightResult != LOUSED);
+	
+	return rightResult;
+}
+
+int goLeft(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+	int strokeResult = 0;
+	int leftResult = 0;
+	do {
+		leftResult = moveLeft(snake, cadre, dims);
+		strokeResult = delay();
+		if (strokeResult == KEY_STROKE) {
+			return KEY_STROKE;
+		}
+	} while (leftResult != WONE && leftResult != LOUSED);
+	
+	return leftResult;
+}
+
+int goUp(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+	int strokeResult = 0;
+	int upResult = 0;
+	do {
+		upResult = moveUp(snake, cadre, dims);
+		strokeResult = delay();
+		if (strokeResult == KEY_STROKE) {
+			return KEY_STROKE;
+		}
+	} while (upResult != WONE && upResult != LOUSED);
+	
+	return upResult;
+}
+
+int goDown(list<pair<int, int>>* snake, CADRE* cadre, DIMENSIONS* dims) {
+	int strokeResult = 0;
+	int downResult = 0;
+	do {
+		downResult = moveDown(snake, cadre, dims);
+		strokeResult = delay();
+		if (strokeResult == KEY_STROKE) {
+			return KEY_STROKE;
+		}
+	} while (downResult != WONE && downResult != LOUSED);
+	
+	return downResult;
 }
 
 #endif

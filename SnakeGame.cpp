@@ -16,6 +16,7 @@ using namespace std;
 #define DOWN 80
 #define RIGHT 77
 #define LEFT 75
+#define KEY_STROKE 1
 
 
 CADRE initializeCadre(DIMENSIONS dims, list<pair<int, int>>* snake) {
@@ -34,28 +35,93 @@ int startGame() {
 	list<pair<int, int>> snake;
     DIMENSIONS dims = promptDimensions();
     CADRE cadre = initializeCadre(dims, &snake);
-    LOCATION loc;
+    pair<int, int> loc;
     displayBoard(cadre, dims, &loc, &snake);
-    char in;
+    int result = 0;
+    char in, prevIn;
     do {
         in = (char) _getch();
         switch (in) {
             case UP:
-                cout << "Up pressed" << endl;
+				if (prevIn != DOWN) {
+					result = goUp(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}
+					}
+					prevIn = UP;
+				} else {
+					result = goDown(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}
+					}
+				}
                 break;
             case DOWN:
-                cout << "Down pressed" << endl;
+                if (prevIn != UP) {
+                	result = goDown(&snake, &cadre, &dims);
+                	if (result == WONE || result == LOUSED) {
+                		if (logByResult(result, &dims) == 0) {
+                			return 0;
+						}
+					}
+					prevIn = DOWN;
+				} else {
+					result = goUp(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}
+					}
+				}
                 break;
             case LEFT:
-                cout << "Left pressed" << endl;
+            	if (prevIn != RIGHT) {
+            		result = goLeft(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}
+					}
+					prevIn = LEFT;
+				} else {
+	                result = goRight(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}						
+					}
+				}
                 break;
             case RIGHT:
-                goRight(&snake, &cadre, &dims);
-                break;
+            	if (prevIn != LEFT) {
+            		result = goRight(&snake, &cadre, &dims);
+            		if (result == WONE || result == LOUSED) {
+            			if (logByResult(result, &dims) == 0) {
+            				return 0;
+						}
+					}
+					prevIn = RIGHT;
+				} else {
+	                result = goLeft(&snake, &cadre, &dims);
+					if (result == WONE || result == LOUSED) {
+						if (logByResult(result, &dims) == 0) {
+							return 0;
+						}						
+					}
+				}
+				break;
             case EXIT:
             case (char)(EXIT + LETTER_NUMBER):
 				if (confirmExit(loc, dims.width + 2)) {
 					return 0;
+				}
+			default:
+				if (result == KEY_STROKE) {
+					continue;
 				}
         }
     } while (true);
